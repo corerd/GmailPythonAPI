@@ -1,0 +1,56 @@
+# Protecting Sensitive Information From Appearing in Public Repos,
+# such as configuration data.
+*.nja
+*.json
+*.pickle
+local/
+
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+
+# C extensions
+*.so
+
+# Distribution / packaging
+.Python
+env/
+bin/
+build/
+develop-eggs/
+dist/
+eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Python virtual environments
+.gapi*
+
+# Installer logs
+pip-log.txt
+pip-delete-this-directory.txt
+
+# Unit test / coverage reports
+htmlcov/
+.tox/
+.coverage
+.cache
+nosetests.xml
+coverage.xml
+
+# Translations
+*.mo
+
+# Django stuff:
+*.log
+*.pot
+
+# OS and temporary stuff:
+*.bak
+*.swp
