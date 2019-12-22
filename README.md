@@ -1,10 +1,7 @@
 # Gmail API requests in Python
 
-`gmailapi.py` is a client front-end library to make requests
+`gmailapi.py` is a client front-end library script to make requests
 to the Gmail Google API.
-
-Using this script as a standalone application, you can generate and authorize
-**OAuth 2.0 tokens** from Google Authorization Server.
 
 Gmail API relies upon [OAuth 2.0 protocol](http://tools.ietf.org/html/rfc6749)
 for authentication and authorization.
@@ -72,15 +69,66 @@ The script opens your default browser and connects Google Authorization Server
 to authenticate itself by means of the **OAuth 2.0 credentials** previously
 saved in the `credentials.json` file.
 
-After logging in with your Google account, you are asked to grant the requesting
-permissions. If you'll accept, the script will store the received
-**OAuth 2.0 tokens** (not username and password) in the `token.pickle` file.
+After logging in with your Google account, an OAuth consent screen is presented
+to you asking to grant the requested permissions. If you'll accept, the script
+will store the received **OAuth 2.0 tokens** (not username and password)
+in the `token.pickle` file.
 
 Subsequent runs of the `gmailapi.py` script won't need the browser and can send
 API request straight by means the **access token** that has limited lifetime.
 If the script needs access to a Gmail API beyond the lifetime of its access token,
 it will proceed automatically requesting a new one from the Google Authorization
 Server by means of the **refresh token**.
+
+
+## Troubleshooting
+
+The OAuth consent screen that is presented to the you may show the warning
+**This app isn't verified** if it is requesting scopes that provide access to
+sensitive user data. These applications must eventually go through the
+[verification process](https://support.google.com/cloud/answer/7454865)
+to remove that warning and other limitations.
+During the development phase you can continue past this warning by clicking
+**Advanced > Go to {Project Name} (unsafe)**.
+
+
+## The gmailapi.py library script
+
+It is required the `credentials.json` file with your **client ID** and
+**client secret** from [Google Cloud Console](
+https://console.cloud.google.com/iam-admin/iam).
+
+The script exports the following function:
+- `GetAccessToken` to obtain an access token from Google Authorization Server;
+- `gmSend` to send an unicode email message from the user's account
+   with optional attachment.
+
+Before any Gmail API request, the script checks out the **OAuth 2.0 tokens** and,
+if necessary, automatically obtains or refreshes them from Google Authorization
+Server.
+
+
+### The command-line application
+
+Run the `gmailapi.py` script as a standalone application to checkout
+**OAuth 2.0 tokens** from Google Authorization Server.
+
+Open a command-line window and run:
+```
+python gmailapi.py
+```
+The script search for the `token.pickle` file to read the **access token** and,
+if it is expired, a new one will be requested and saved to the same file.
+
+If no valid **OAuth 2.0 tokens** are found, the script search for the
+`credentials.json` file and, if found, will start the user consent process
+to obtain a new set of tokens, storing them to the `token.pickle` file.
+
+
+## Supported Python Versions
+
+Python 2,7 and 3.6 are fully supported and tested.
+The `gmailapi.py` script may work on other versions of 3 though not tested.
 
 
 # Security advice
@@ -111,7 +159,7 @@ https://developers.google.com/gmail/api/quickstart/python)
 https://developers.google.com/gmail/api/v1/reference/users/messages/send)
 
 
-# Apache License, Version 2.0
+# License
 
 Copyright (c) 2019 Corrado Ubezio
 
