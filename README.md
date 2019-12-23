@@ -58,16 +58,15 @@ pip install -r requirements.txt
 ```
 
 
-### 3. Obtain OAuth tokens from the Google Authorization Server
+### 3. Obtain OAuth 2.0 tokens from the Google Authorization Server
 
 Before the `gmailapi.py` script performs its first Gmail API request,
 it must obtain a set of **OAuth 2.0 tokens**, that is:
 - an **access token** that grants limited lifetime access to the API;
 - a **refresh token** allowing the script to obtain new access tokens.
 
-The script opens your default browser and connects Google Authorization Server
-to authenticate itself by means of the **OAuth 2.0 credentials** previously
-saved in the `credentials.json` file.
+The script opens your default browser and submits to Google Authorization Server
+your **OAuth 2.0 credentials** saved in the `credentials.json` file.
 
 After logging in with your Google account, an OAuth consent screen is presented
 to you asking to grant the requested permissions. If you'll accept, the script
@@ -98,7 +97,7 @@ It is required the `credentials.json` file with your **client ID** and
 **client secret** from [Google Cloud Console](
 https://console.cloud.google.com/iam-admin/iam).
 
-The script exports the following function:
+The script exports the following functions:
 - `GetAccessToken` to obtain an access token from Google Authorization Server;
 - `gmSend` to send an unicode email message from the user's account
    with optional attachment.
@@ -118,7 +117,8 @@ Open a command-line window and run:
 python gmailapi.py
 ```
 The script search for the `token.pickle` file to read the **access token** and,
-if it is expired, a new one will be requested and saved to the same file.
+if it is expired, a new one will be requested and saved to the same file
+without any further user interaction.
 
 If no valid **OAuth 2.0 tokens** are found, the script search for the
 `credentials.json` file and, if found, will start the user consent process
