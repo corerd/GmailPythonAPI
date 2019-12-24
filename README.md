@@ -98,7 +98,7 @@ It is required the `credentials.json` file with your **client ID** and
 https://console.cloud.google.com/iam-admin/iam).
 
 The script exports the following functions:
-- `GetAccessToken` to obtain an access token from Google Authorization Server;
+- `GetAuthTokens` to obtain OAuth 2.0 tokens from Google Authorization Server;
 - `gmSend` to send an unicode email message from the user's account
    with optional attachment.
 
@@ -116,11 +116,11 @@ Open a command-line window and run:
 ```
 python gmailapi.py
 ```
-The script search for the `token.pickle` file to read the **access token** and,
+The script searches for the `token.pickle` file to read the **access token** and,
 if it is expired, a new one will be requested and saved to the same file
 without any further user interaction.
 
-If no valid **OAuth 2.0 tokens** are found, the script search for the
+If no valid **OAuth 2.0 tokens** are found, the script searches for the
 `credentials.json` file and, if found, will start the user consent process
 to obtain a new set of tokens, storing them to the `token.pickle` file.
 
