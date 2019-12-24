@@ -115,8 +115,15 @@ from google_auth_oauthlib.flow import InstalledAppFlow
 from google.auth.transport.requests import Request
 
 
-OAUTH_CLIENT_SECRET_FILE = 'credentials.json'
 OAUTH_TOKEN_FILE = 'token.pickle'
+OAUTH_CREDENTIAL_FILE = 'credentials.json'
+
+CREDENTIAL_LOSS_MESSAGE = """
+Your OAuth 2.0 credential file named {} is missing or invalid.
+Open the tutorial Gmail Python API Quickstart
+    https://developers.google.com/gmail/api/quickstart/python
+and go to the ENABLE THE GMAIL API wizard.
+"""
 
 # The variable SCOPES controls the set of resources and operations
 # that an access_token permits.
@@ -205,9 +212,9 @@ def GetAuthTokens(modeIsInteractive=False):
             # If there are no tokens available and the mode is interactive
             # then open the OAuth consent screen in default browser and
             # let the user log in (the `credentials.json` file is required)
-            if os.path.exists(OAUTH_CLIENT_SECRET_FILE) and modeIsInteractive:
+            if os.path.exists(OAUTH_CREDENTIAL_FILE) and modeIsInteractive:
                 flow = InstalledAppFlow.from_client_secrets_file(
-                                            OAUTH_CLIENT_SECRET_FILE, SCOPES)
+                                            OAUTH_CREDENTIAL_FILE, SCOPES)
                 auth_tokens = flow.run_local_server(port=0)
         # Save the tokens (if any) for the next run
         if auth_tokens:
@@ -362,10 +369,17 @@ def gmSend(to, subject, message_text, attachedFilePath=None,
     return SendMessage(service, 'me', mail_message)
 
 
-if __name__ == '__main__':
-    print('Get the OAuth credentials for GMAIL API...')
-    credentials = GetAuthTokens(modeIsInteractive=True)
-    if credentials:
+def main():
+    print('Checkout Gmail API OAuth 2.0 tokens from Google Authorization Server')
+    if not os.path.exists(OAUTH_CREDENTIAL_FILE):
+        print(CREDENTIAL_LOSS_MESSAGE.format(OAUTH_CREDENTIAL_FILE))
+        return
+    auth_tokens = GetAuthTokens(modeIsInteractive=True)
+    if auth_tokens:
         print('Done')
     else:
         print('Some error occurred')
+
+
+if __name__ == '__main__':
+    main()
