@@ -131,6 +131,24 @@ Python 2,7 and 3.6 are fully supported and tested.
 The `gmailapi.py` script may work on other versions of 3 though not tested.
 
 
+# Demo
+
+You can find the `gmsend_test.py` command-line script that demonstrates how
+to use the `gmailapi.py` library to send a test message to someone with
+an optional attachment.
+
+Usage:
+```
+gmsend_test.py <email-address-of-the-receiver> [attached-file-path]
+```
+
+Example: to send a test message to someone attaching the gmail-logo.png file,
+open a command-line window and run:
+```
+python gmsend_test.py <email-address-of-the-receiver> gmail-logo.png
+```
+
+
 # Security advice
 
 The `gmailapi.py` script doesn't save any username and password,

@@ -1,20 +1,24 @@
+#!/usr/bin/env python
 # -*- coding: utf-8 -*-
-"""CLI script to send an email message from the user's GMAIL account
+"""Command-line application to send email message from the user's Gmail account
+by means of gmailapi.py library
 """
 
 from __future__ import print_function
 
-import traceback
 import logging
-
-from sys import argv
-from random import randint
+import traceback
+from sys import argv, version_info
 from datetime import datetime
+from random import randint
 
 from apiclient import errors
-from gmail import gmSend
 
-TEST_MESSAGE = """Send an email using GMAIL API from Python
+from gmailapi import gmSend
+
+
+TEST_SUBJECT = 'Python {pymajor}.{pyminor} !?gmsend test¿¡ at {now}' 
+TEST_MESSAGE = """Send an email using Gmail API from Python
 with some unicode charaters in the subject
 and in the text body à è é ì ò ù
 adding random content {}
@@ -28,7 +32,9 @@ def gmsend_test(to, attachment=None):
         to: Email address of the receiver.
         attachment: The path to the file to be attached.
     """
-    subject = 'gmsend !?test¿¡ at {}.'.format(datetime.now())
+    subject = TEST_SUBJECT.format( pymajor=version_info.major,
+                                    pyminor=version_info.minor,
+                                    now=datetime.now() )
     text = TEST_MESSAGE.format(randint(100, 999))
     if attachment:
         text = text + 'with attachment'
@@ -43,9 +49,10 @@ def gmsend_test(to, attachment=None):
 
 
 def main():
-    print('Send a test email message from the user GMAIL account')
+    print('Python {}.{}'.format(version_info.major, version_info.minor))
+    print('Send a test unicode email message from the user Gmail account')
     if len(argv) < 2 or len(argv) > 3:
-        print('USAGE; gmsend_test <dest-address> [attachment]')
+        print('USAGE; gmsend_test.py <dest-address> [attached-file-path]')
         return
     dest_address = argv[1]
     if len(argv) == 3:
