@@ -31,6 +31,10 @@ def gmsend_test(to, attachment=None):
     Args:
         to: Email address of the receiver.
         attachment: The path to the file to be attached.
+
+    This is an attended command-line application, then set modeIsInteractive
+    to True allowing the gmSend() function, if required, to open a browser to
+    start the user consent process.
     """
     subject = TEST_SUBJECT.format( pymajor=version_info.major,
                                     pyminor=version_info.minor,
