@@ -147,11 +147,15 @@ def GetAuthTokens(modeIsInteractive=False):
     the refresh_token and saved together to the same file without any user
     interaction.
 
-    If no valid **OAuth 2.0 tokens** are found, this script searches for the
-    `credentials.json` file and, if found, will open your default browser
-    submitting your OAuth 2.0 credentials to the Google Authorization Server
-    and start the user consent process to obtain a new set of tokens
-    that will be stored to a newly created `token.pickle` file.
+    If no valid **OAuth 2.0 tokens** are found (for instance the first run),
+    this script searches for the credentials.json` file and, if found,
+    will open your default browser submitting your OAuth 2.0 credentials
+    to the Google Authorization Server and start the user consent process
+    to obtain a new set of tokens that will be stored to a newly created
+    `token.pickle` file.
+
+    Consequent runs won't need the user interacting the browser and can
+    return OAuth 2.0 tokens straight.
 
     The user consent process is enabled by the `modeIsInteractive` argument
     because it needs to be attended by the user who must log in with
@@ -227,7 +231,7 @@ def GetAuthTokens(modeIsInteractive=False):
 
 
 def SendMessage(service, user_id, message):
-    """Send an email message.
+    """Send an email message by means of HTTP request
 
     Args:
         service: Authorized Gmail API service instance.
@@ -354,8 +358,9 @@ def gmSend(to, subject, message_text, attachedFilePath=None,
     access_token to the Gmail API.
 
     The first time the script opens a browser to start the user consent process
-    and your OAuth 2.0 tokens locally.
-    Consequent runs won't need the browser and can send emails straight.
+    and then will save your OAuth 2.0 tokens locally.
+    Consequent runs won't need the user interacting the browser and can send
+    emails straight.
     """
     # Create a unicode email message with an optional attachment
     if attachedFilePath:
@@ -363,7 +368,7 @@ def gmSend(to, subject, message_text, attachedFilePath=None,
                                             message_text, attachedFilePath)
     else:
         mail_message = CreateMessage('me', to, subject, message_text)
-    # Obtain an authorized Gmail API service instance.
+    # Obtain an authorized Gmail API service instance by means of auth_tokens
     service = build('gmail', 'v1', credentials=GetAuthTokens(modeIsInteractive))
     # Send the email
     return SendMessage(service, 'me', mail_message)
