@@ -357,8 +357,10 @@ def gmSend(to, subject, message_text, attachedFilePath=None,
     obtains the OAuth 2.0 tokens and sends the message together with the
     access_token to the Gmail API.
 
-    The first time the script opens a browser to start the user consent process
-    and then will save your OAuth 2.0 tokens locally.
+    The first time, if modeIsInteractive is True, this function opens a browser
+    to start the user consent process and then saves your OAuth 2.0 tokens.
+    If no valid **OAuth 2.0 tokens** are found and / or the user does not grant
+    the permission, the function rises exceptions.
     Consequent runs won't need the user interacting the browser and can send
     emails straight.
     """
@@ -368,17 +370,22 @@ def gmSend(to, subject, message_text, attachedFilePath=None,
                                             message_text, attachedFilePath)
     else:
         mail_message = CreateMessage('me', to, subject, message_text)
-    # Obtain an authorized Gmail API service instance by means of auth_tokens
+    # Obtain an authorized Gmail API service instance by means of OAuth tokens
     service = build('gmail', 'v1', credentials=GetAuthTokens(modeIsInteractive))
     # Send the email
     return SendMessage(service, 'me', mail_message)
 
 
 def main():
+    print('Python {}.{}.{}'.format(version_info.major, version_info.minor,
+                                    version_info.micro))
     print('Checkout Gmail API OAuth 2.0 tokens from Google Authorization Server')
     if not os.path.exists(OAUTH_CREDENTIAL_FILE):
         print(CREDENTIAL_LOSS_MESSAGE.format(OAUTH_CREDENTIAL_FILE))
         return
+    # This is an attended command-line application, then set modeIsInteractive
+    # to True allowing the GetAuthTokens() function, if required, to open
+    # a browser to start the user consent process.
     auth_tokens = GetAuthTokens(modeIsInteractive=True)
     if auth_tokens:
         print('Done')

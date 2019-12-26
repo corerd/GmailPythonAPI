@@ -53,7 +53,8 @@ def gmsend_test(to, attachment=None):
 
 
 def main():
-    print('Python {}.{}'.format(version_info.major, version_info.minor))
+    print('Python {}.{}.{}'.format(version_info.major, version_info.minor,
+                                    version_info.micro))
     print('Send a test unicode email message from the user Gmail account')
     if len(argv) < 2 or len(argv) > 3:
         print('USAGE; gmsend_test.py <dest-address> [attached-file-path]')
